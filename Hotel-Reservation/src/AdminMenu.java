@@ -99,7 +99,7 @@ public class AdminMenu {
             System.out.println("Enter room number: ");
             String roomNumber = input.nextLine();
             System.out.println("Enter price per night: ");
-            Double roomPrice = input.nextDouble();
+            Double roomPrice = checkRoomPrice(input);
 
             System.out.println("Enter room type: 1 - Single bed, 2 - Double bed");
             RoomType roomType = checkRoomType(input);
@@ -109,19 +109,31 @@ public class AdminMenu {
             do {
                 System.out.println("Would you like to add another room? Y/N");
                 addRoom = input.next().toLowerCase().trim();
-                if(!addRoom.equals("Y") && !addRoom.equals("y") && !addRoom.equals("N") && !addRoom.equals("n")) {
-                    System.out.println("Please enter valid answer: Y/N");
-                }
-            } while(addRoom.equals("N") || addRoom.equals("n"));
+//                if(!addRoom.equals("Y") && !addRoom.equals("y") && !addRoom.equals("N") && !addRoom.equals("n")) {
+//                    System.out.println("Please enter valid answer: Y/N");
+//                }
+            } while(!addRoom.equals("Y") && !addRoom.equals("y") && !addRoom.equals("N") && !addRoom.equals("n"));
+            input.nextLine();
         } while(addRoom.equals("Y") || addRoom.equals("y"));
     }
 
     private static RoomType checkRoomType(Scanner input) {
+        String type = input.nextLine();
         try {
-            return RoomType.checkRoomType(input.nextLine());
+            return RoomType.checkRoomType(type);
         } catch (IllegalArgumentException exp) {
             System.out.println("Invalid room type! Enter room type: 1 - Single bed, 2 - Double bed");
             return checkRoomType(input);
+        }
+    }
+
+    private static double checkRoomPrice(Scanner input) {
+        String price = input.nextLine();
+        try {
+            return Double.parseDouble(price);
+        } catch (NumberFormatException exp) {
+            System.out.println("Invalid room price! Please enter correct value.");
+            return checkRoomPrice(input);
         }
     }
 }

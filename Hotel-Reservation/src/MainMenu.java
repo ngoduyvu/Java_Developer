@@ -103,15 +103,18 @@ public class MainMenu {
                     if(rooms.stream().anyMatch(room -> room.getRoomNumber().equals(roomNumber))) {
                         IRoom room = hotelResource.getRoom(roomNumber);
                         Reservation reservation = hotelResource.bookRoom(email, room, checkIn, checkOut);
+                        System.out.println("Reservation created successfully!");
+                        System.out.println(reservation);
                     } else {
                         System.out.println("Sorry, this room is not available. Please book another room!");
                     }
-                    printMainMenu();
+                    //printMainMenu();
                 } else {
                     System.out.println("Account not found.\nYou need to create a new account!");
                 }
             }
         } else if(answerBookRoom.equals("N") || answerBookRoom.equals("n")) {
+            System.out.println("Please create an account in order to use own service!");
             printMainMenu();
         } else {
             System.out.println("Please answer Y or N");
@@ -156,7 +159,8 @@ public class MainMenu {
         try {
             return new SimpleDateFormat(DATE_PATTERN).parse(input.nextLine());
         } catch(ParseException ex) {
-            System.out.println("Error: Invalid date.\n");
+            System.out.println("Error: Invalid date. Please enter correct date!");
+            getInputDate(input);
         }
         return null;
     }
