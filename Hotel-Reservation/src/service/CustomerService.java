@@ -17,7 +17,7 @@ public class CustomerService {
         return SINGLETON;
     }
 
-    public void addCustomer(String firstName, String lastName, String email) {
+    public void addCustomer(String email, String firstName, String lastName) {
         customers.add(new Customer(firstName, lastName, email));
     }
 
