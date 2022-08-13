@@ -1,5 +1,3 @@
-package menu;
-
 import api.HotelResource;
 import model.Room.IRoom;
 import model.Reservation.Reservation;
@@ -13,10 +11,10 @@ import java.text.ParseException;
 
 public class MainMenu {
 
-    private HotelResource hotelResource = HotelResource.getSINGLETON();
+    private static HotelResource hotelResource = HotelResource.getSINGLETON();
     // Scanner input = new Scanner(System.in);
 
-    public void mainMenu() {
+    public static void mainMenu() {
         boolean end = false;
         String choice;
         Scanner input = new Scanner(System.in);
@@ -36,6 +34,7 @@ public class MainMenu {
                         createAccount();
                         break;
                     case "4":
+                        AdminMenu.adminMenu();
                         break;
                     case "5":
                         end = true;
@@ -45,11 +44,11 @@ public class MainMenu {
                         System.out.println("Invalid Input.\n");
                 }
 
-            } while (!choice.equals("1") && !choice.equals("2") && !choice.equals("3") && !choice.equals("4") && !choice.equals("5") && end);
+            } while (!choice.equals("1") && !choice.equals("2") && !choice.equals("3") && !choice.equals("4") && !choice.equals("5") && end != true);
         }
     }
 
-    private void printMainMenu() {
+    private static void printMainMenu() {
         System.out.println("Welcome to the Hotel Reservation Application");
         System.out.println("--------------------------------------------");
         System.out.println("1. Find and reserve a room");
@@ -61,7 +60,7 @@ public class MainMenu {
         System.out.println("Please select a number for the menu option");
     }
 
-    private void findAndReserveRoom() {
+    private static void findAndReserveRoom() {
         Calendar calendar = Calendar.getInstance();
 
         Scanner input = new Scanner(System.in);
@@ -84,7 +83,7 @@ public class MainMenu {
         }
     }
 
-    private void reserveRoom(Scanner input, Date checkIn, Date checkOut, Collection<IRoom> rooms) {
+    private static void reserveRoom(Scanner input, Date checkIn, Date checkOut, Collection<IRoom> rooms) {
         System.out.println("Would you like to book a room? Y/N");
         String answerBookRoom = input.nextLine();
 
@@ -119,7 +118,7 @@ public class MainMenu {
             reserveRoom(input, checkIn, checkOut, rooms);
         }
     }
-    private void seeMyReservation() {
+    private static void seeMyReservation() {
         Scanner input = new Scanner(System.in);
 
         System.out.println("Enter Email email@domain.com: ");
@@ -135,7 +134,7 @@ public class MainMenu {
         }
 
     }
-    private void createAccount() {
+    private static void createAccount() {
         Scanner input = new Scanner(System.in);
 
         System.out.println("Enter Email email@domain.com: ");
@@ -152,7 +151,7 @@ public class MainMenu {
             System.out.println(ex.getLocalizedMessage());
         }
     }
-    private Date getInputDate(Scanner input) {
+    private static Date getInputDate(Scanner input) {
         String DATE_PATTERN = "MM/dd/yyyy";
         try {
             return new SimpleDateFormat(DATE_PATTERN).parse(input.nextLine());

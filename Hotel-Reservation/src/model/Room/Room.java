@@ -2,7 +2,7 @@ package model.Room;
 
 import java.util.Objects;
 
-public class Room {
+public class Room implements IRoom {
     private String roomNumber;
     protected RoomType enumeration;
     private Double price;

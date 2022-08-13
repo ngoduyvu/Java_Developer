@@ -1,5 +1,3 @@
-package menu;
-
 import api.AdminResource;
 import model.Customer.Customer;
 import model.Room.IRoom;
@@ -8,17 +6,14 @@ import model.Room.RoomType;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
 
 public class AdminMenu {
-    private AdminResource adminResource = AdminResource.getSINGLETON();
+    private static AdminResource adminResource = AdminResource.getSINGLETON();
 
-    public void adminMenu() {
+    public static void adminMenu() {
         boolean end = false;
         String choice;
         Scanner input = new Scanner(System.in);
@@ -55,7 +50,7 @@ public class AdminMenu {
     }
 
 
-    private void printAdminMenu() {
+    private static void printAdminMenu() {
         System.out.println("Admin Menu");
         System.out.println("--------------------------------------------");
         System.out.println("1. See all Customers");
@@ -67,7 +62,7 @@ public class AdminMenu {
         System.out.println("Please select a number for the menu option");
     }
 
-    private void showAllCustomers() {
+    private static void showAllCustomers() {
         Collection<Customer> customers = adminResource.getAllCustomers();
 
         if(customers.isEmpty()) {
@@ -79,7 +74,7 @@ public class AdminMenu {
         }
     }
 
-    private void showAllRooms() {
+    private static void showAllRooms() {
         Collection<IRoom> rooms = adminResource.getAllRooms();
 
         if(rooms.isEmpty()) {
@@ -91,11 +86,11 @@ public class AdminMenu {
         }
     }
 
-    private void showAllReservations() {
+    private static void showAllReservations() {
         adminResource.displayAllReservations();
     }
 
-    private void addRoom() {
+    private static void addRoom() {
         String addRoom = "Y";
         List<IRoom> rooms = new ArrayList<>();
         Scanner input = new Scanner(System.in);
@@ -108,13 +103,20 @@ public class AdminMenu {
 
             System.out.println("Enter room type: 1 - Single bed, 2 - Double bed");
             RoomType roomType = checkRoomType(input);
-            Room room = new Room(roomNumber, roomType, roomPrice);
-            //adminResource.addRoom(Collections.singletonList(room));
+            IRoom room = new Room(roomNumber, roomType, roomPrice);
+            adminResource.addRoom(Collections.singletonList(room));
             System.out.println("Room added successfully!");
+            do {
+                System.out.println("Would you like to add another room? Y/N");
+                addRoom = input.next().toLowerCase().trim();
+                if(!addRoom.equals("Y") && !addRoom.equals("y") && !addRoom.equals("N") && !addRoom.equals("n")) {
+                    System.out.println("Please enter valid answer: Y/N");
+                }
+            } while(addRoom.equals("N") || addRoom.equals("n"));
         } while(addRoom.equals("Y") || addRoom.equals("y"));
     }
 
-    private RoomType checkRoomType(Scanner input) {
+    private static RoomType checkRoomType(Scanner input) {
         try {
             return RoomType.checkRoomType(input.nextLine());
         } catch (IllegalArgumentException exp) {
