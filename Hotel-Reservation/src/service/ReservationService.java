@@ -27,7 +27,13 @@ public class ReservationService {
     public Collection<IRoom> getAllRooms() {
         return rooms;
     }
-    public void addRoom(IRoom room) { rooms.add(room); }
+    public void addRoom(IRoom room) {
+        for(IRoom existRoom: rooms) {
+            existRoom.equals(room);
+            rooms.remove(existRoom);
+        }
+        rooms.add(room);
+    }
 
     public IRoom getRoom(String roomNo) {
         for(IRoom room: rooms) {

@@ -94,29 +94,59 @@ public class AdminMenu {
         String addRoom = "Y";
         List<IRoom> rooms = new ArrayList<>();
         Scanner input = new Scanner(System.in);
+        boolean update;
 
         do {
+            update = true;
             System.out.println("Enter room number: ");
             String roomNumber = input.nextLine();
-            System.out.println("Enter price per night: ");
-            Double roomPrice = checkRoomPrice(input);
+            if(checkRoomExist(roomNumber)) {
+                System.out.println("Room already exist!");
+                update = checkAnswerUpdate(input);
 
-            System.out.println("Enter room type: 1 - Single bed, 2 - Double bed");
-            RoomType roomType = checkRoomType(input);
-            IRoom room = new Room(roomNumber, roomType, roomPrice);
-            adminResource.addRoom(Collections.singletonList(room));
-            System.out.println("Room added successfully!");
+            }
+            if(update) {
+                System.out.println("Enter price per night: ");
+                Double roomPrice = checkRoomPrice(input);
+
+                System.out.println("Enter room type: 1 - Single bed, 2 - Double bed");
+                RoomType roomType = checkRoomType(input);
+                IRoom room = new Room(roomNumber, roomType, roomPrice);
+                adminResource.addRoom(Collections.singletonList(room));
+                System.out.println("Room added successfully!");
+            }
             do {
                 System.out.println("Would you like to add another room? Y/N");
                 addRoom = input.next().toLowerCase().trim();
-//                if(!addRoom.equals("Y") && !addRoom.equals("y") && !addRoom.equals("N") && !addRoom.equals("n")) {
-//                    System.out.println("Please enter valid answer: Y/N");
-//                }
             } while(!addRoom.equals("Y") && !addRoom.equals("y") && !addRoom.equals("N") && !addRoom.equals("n"));
             input.nextLine();
         } while(addRoom.equals("Y") || addRoom.equals("y"));
     }
 
+    private static Boolean checkRoomExist(String roomNumber) {
+        Collection<IRoom> rooms = adminResource.getAllRooms();
+        for (IRoom room: rooms) {
+            if(roomNumber.equals(room.getRoomNumber())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static Boolean checkAnswerUpdate(Scanner input) {
+        System.out.println("You want to update it? Y/N");
+        String answer = input.nextLine();
+
+        if(answer.equals("Y") || answer.equals("y")) {
+            return true;
+        } else if(answer.equals("N") || answer.equals("n")) {
+            return false;
+        } else {
+            System.out.println("Invalid input!");
+            return checkAnswerUpdate(input);
+        }
+
+    }
     private static RoomType checkRoomType(Scanner input) {
         String type = input.nextLine();
         try {
