@@ -29,8 +29,9 @@ public class ReservationService {
     }
     public void addRoom(IRoom room) {
         for(IRoom existRoom: rooms) {
-            existRoom.equals(room);
-            rooms.remove(existRoom);
+            if(existRoom.equals(room)) {
+                rooms.remove(existRoom);
+            }
         }
         rooms.add(room);
     }
@@ -56,8 +57,9 @@ public class ReservationService {
         List<IRoom> availableRooms = new ArrayList<>();
 
         for(Reservation reservation: reservations) {
-            if(reservation.getCheckInDate().before(checkOutDate)
-                    && reservation.getCheckOutDate().after(checkInDate)) {
+//            if(reservation.getCheckInDate().before(checkOutDate)
+//                    && reservation.getCheckOutDate().after(checkInDate)) {
+            if(!reservation.getCheckInDate().after(checkInDate) && !reservation.getCheckOutDate().before(checkOutDate)) {
                 for(IRoom room: rooms) {
                     if (!reservation.getRoom().equals(room)) {
                         availableRooms.add(room);

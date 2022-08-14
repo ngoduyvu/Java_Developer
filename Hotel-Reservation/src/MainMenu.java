@@ -49,7 +49,7 @@ public class MainMenu {
     }
 
     private static void printMainMenu() {
-        System.out.println("Welcome to the Hotel Reservation Application");
+        System.out.println("\nWelcome to the Hotel Reservation Application");
         System.out.println("--------------------------------------------");
         System.out.println("1. Find and reserve a room");
         System.out.println("2. See my reservations");
