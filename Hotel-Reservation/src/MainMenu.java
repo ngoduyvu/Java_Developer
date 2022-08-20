@@ -62,6 +62,7 @@ public class MainMenu {
 
     private static void findAndReserveRoom() {
         Calendar calendar = Calendar.getInstance();
+        // Collection<IRoom> rooms;
 
         Scanner input = new Scanner(System.in);
         System.out.println("Enter Check-In Date mm/dd/yyyy: ");
@@ -71,11 +72,23 @@ public class MainMenu {
 
         if ((checkIn != null && checkOut != null) && (checkIn.before(checkOut))) {
             Collection<IRoom> rooms = hotelResource.findRoom(checkIn, checkOut);
-
             if(!rooms.isEmpty()) {
                 reserveRoom(input, checkIn, checkOut, rooms);
             } else {
-                System.out.println("No rooms found!");
+//                System.out.println("Find alternative date!");
+                Date alternativeCheckIn = hotelResource.RecommendDate(checkIn);
+                Date alternativeCheckOut = hotelResource.RecommendDate(checkOut);
+//                System.out.println("New Check-In Date:" + alternativeCheckIn);
+//                System.out.println("New Check-Out Date:" + alternativeCheckOut);
+                Collection<IRoom> alternativeRooms = hotelResource.findRoom(alternativeCheckIn, alternativeCheckOut);
+                if(!alternativeRooms.isEmpty()) {
+                    System.out.println("Find alternative date!");
+                    System.out.println("New Check-In Date:" + alternativeCheckIn);
+                    System.out.println("New Check-Out Date:" + alternativeCheckOut);
+                    reserveRoom(input, alternativeCheckIn, alternativeCheckOut, alternativeRooms);
+                } else {
+                    System.out.println("No rooms found!");
+                }
             }
 
         } else {

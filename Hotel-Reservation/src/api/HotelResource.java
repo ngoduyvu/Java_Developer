@@ -33,6 +33,14 @@ public class HotelResource {
         return reservationService.findRooms(checkInDate, checkOutDate);
     }
 
+    public Collection<IRoom> RecommendRoom(Date checkInDate, Date checkOutDate) {
+        return reservationService.findAlternativeRooms(checkInDate, checkOutDate);
+    }
+
+    public Date RecommendDate(Date date) {
+        return reservationService.addDefaultDays(date);
+    }
+
     public Reservation bookRoom(String email, IRoom room, Date checkInDate, Date checkOutDate) {
         return reservationService.reserveRoom(getCustomer(email), room, checkInDate, checkOutDate);
     }

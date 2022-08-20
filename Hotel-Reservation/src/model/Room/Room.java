@@ -27,4 +27,9 @@ public class Room implements IRoom {
     public String toString() {
         return "Room Number: " + this.roomNumber + " is " + "type " + this.enumeration + " and cost " + this.price;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(roomNumber);
+    }
 }
