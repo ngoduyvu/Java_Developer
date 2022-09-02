@@ -22,6 +22,8 @@ final class PageParserFactoryImpl implements PageParserFactory {
     this.profiler = profiler;
     this.ignoredWords = ignoredWords;
     this.timeout = timeout;
+
+    // Add Code
   }
 
   @Override

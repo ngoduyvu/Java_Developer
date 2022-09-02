@@ -9,8 +9,11 @@ import java.time.Clock;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.Method;
 
 import static java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME;
+
+
 
 /**
  * Concrete implementation of the {@link Profiler}.
@@ -34,6 +37,10 @@ final class ProfilerImpl implements Profiler {
     // TODO: Use a dynamic proxy (java.lang.reflect.Proxy) to "wrap" the delegate in a
     //       ProfilingMethodInterceptor and return a dynamic proxy from this method.
     //       See https://docs.oracle.com/javase/10/docs/api/java/lang/reflect/Proxy.html.
+
+    if (!checkProfile(klass)) {
+      throw new IllegalArgumentException(klass.getName() + "doesn't have profiled methods.");
+    }
 
     ProfilingMethodInterceptor interceptor = new ProfilingMethodInterceptor(clock, delegate, state);
     Object proxy = Proxy.newProxyInstance(
@@ -65,4 +72,16 @@ final class ProfilerImpl implements Profiler {
     state.write(writer);
     writer.write(System.lineSeparator());
   }
+
+  private Boolean checkProfile(Class<?> kclass) {
+    boolean isProfiled = false;
+    for (Method method : kclass.getMethods()) {
+      if (method.isAnnotationPresent(Profiled.class)) {
+        isProfiled = true;
+        break;
+      }
+    }
+    return isProfiled;
+  }
+
 }
